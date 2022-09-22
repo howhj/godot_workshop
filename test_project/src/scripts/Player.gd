@@ -10,6 +10,12 @@ export var speed = 300
 # We set it as a constant instead of a variable, since we won't be editing it
 # in the code later.
 const Bullet = preload("res://src/actors/Player_bullet.tscn")
+export (int) var fire_rate = 15
+var _shoot_frame = 0
+var _max_frames
+
+func _ready():
+	_max_frames = 60 / fire_rate
 
 # _physics_process() is a built-in function. It loops 60 times a second, using
 # regular intervals. This means that even if the framerate is not stable,
@@ -49,29 +55,33 @@ func _physics_process(delta):
 	
 	# This part deals with shooting projectiles.
 	if Input.get_action_strength("shoot") > 0:
-		# This creates an instance of the player bullet scene we have loaded
-		# earlier.
-		var bullet_instance = Bullet.instance()
-		
-		# Here, we set where the bullet instance should be created. We want to
-		# spawn it where the Bullet_spawner is. In order to have a common
-		# reference frame, using global position is required.
-		bullet_instance.global_position = $Bullet_spawner.get_global_position()
-		
-		# This is to simply scale up the size of the bullet instance.
-		bullet_instance.set_scale(Vector2(2,2))
-		
-		# get_tree() is used to access the list of nodes in the current scene.
-		# get_root() is used to access the root node. When the player is
-		# placed in a level, the root node will be Node2D.
-		# add_child() will make the bullet instance a child of the node being
-		# referenced.
-		#
-		# Together, these are used to make the bullet instance a child of
-		# Node2D, instead of the player. Child nodes will follow any movement
-		# made by the parent, so we want to ensure that the player does not
-		# affect the movement of the bullet instance after the bullet has been
-		# fired. To do this, we make the bullet instance a child of Node2D
-		# instead, which is an immobile object.
-		get_tree().get_root().add_child(bullet_instance)
+		if _shoot_frame == 0:
+			# This creates an instance of the player bullet scene we have loaded
+			# earlier.
+			var bullet_instance = Bullet.instance()
+			
+			# Here, we set where the bullet instance should be created. We want to
+			# spawn it where the Bullet_spawner is. In order to have a common
+			# reference frame, using global position is required.
+			bullet_instance.global_position = $Bullet_spawner.get_global_position()
+			
+			# This is to simply scale up the size of the bullet instance.
+			bullet_instance.set_scale(Vector2(2,2))
+			
+			# get_tree() is used to access the list of nodes in the current scene.
+			# get_root() is used to access the root node. When the player is
+			# placed in a level, the root node will be Node2D.
+			# add_child() will make the bullet instance a child of the node being
+			# referenced.
+			#
+			# Together, these are used to make the bullet instance a child of
+			# Node2D, instead of the player. Child nodes will follow any movement
+			# made by the parent, so we want to ensure that the player does not
+			# affect the movement of the bullet instance after the bullet has been
+			# fired. To do this, we make the bullet instance a child of Node2D
+			# instead, which is an immobile object.
+			get_tree().get_root().add_child(bullet_instance)
+		_shoot_frame = (_shoot_frame + 1) % _max_frames
 	
+func _on_Hitbox_body_entered(body):
+	queue_free()

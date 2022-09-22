@@ -14,6 +14,11 @@ config/name="New"
 run/main_scene="res://src/levels/test_level.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/size/width=600
+window/size/height=800
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
@@ -50,8 +55,9 @@ shoot={
 
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Player_bullet"
-2d_physics/layer_3="Enemy"
-2d_physics/layer_4="Enemy_bullet"
+2d_physics/layer_3="Enemy_hurtbox"
+2d_physics/layer_4="Enemy_hitbox"
+2d_physics/layer_5="Enemy_bullet"
 
 [physics]
 
