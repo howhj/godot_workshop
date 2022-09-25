@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Enemy3_Manager.gd" type="Script" id=1]
+[ext_resource path="res://src/scripts/Enemy3/Enemy3_Manager.gd" type="Script" id=1]
 [ext_resource path="res://assets/spritesheets/enemy-big.png" type="Texture" id=2]
-[ext_resource path="res://Enemy3_BulletSpawner.gd" type="Script" id=3]
-[ext_resource path="res://src/actors/Enemy.gd" type="Script" id=4]
+[ext_resource path="res://src/scripts/Enemy3/Enemy3_BulletSpawner.gd" type="Script" id=3]
+[ext_resource path="res://src/scripts/Enemy.gd" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -30,6 +30,8 @@ extents = Vector2( 13, 7.5 )
 [node name="Enemy3" type="KinematicBody2D"]
 collision_layer = 4
 script = ExtResource( 4 )
+max_hp = 60
+speed = 0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )

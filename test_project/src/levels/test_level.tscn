@@ -6,11 +6,9 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 353, 512 )
+position = Vector2( 301, 655 )
 scale = Vector2( 2, 2 )
 
 [node name="Enemy3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 259, 280 )
+position = Vector2( 281, 351 )
 scale = Vector2( 4, 4 )
-max_hp = 60
-speed = 0
