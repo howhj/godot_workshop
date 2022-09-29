@@ -7,18 +7,25 @@ extends Node2D
 export (int) var max_hp = 3
 var _current_hp
 
-# Same as above. This is used to dictate the enemy's speed.
-export (int) var speed = 100
-
 var _parent
+var _scroll_velocity
+export (float) var custom_scale = 1
+
+var can_shoot = false
+var pre_spawn = true
 
 func _ready():
 	_current_hp = max_hp
 	_parent = get_parent()
+	var level = _parent.get_parent()
+	_scroll_velocity = level.scroll_velocity
+	var scale_value = level.scale_value
+	_parent.set_scale(Vector2(scale_value, scale_value) * custom_scale)
 
 # Allows the enemy to move. For now, we have them drift downward.
 func _physics_process(delta):
-	_parent.move_and_slide(Vector2(0, speed))
+	if pre_spawn:
+		_parent.move_and_slide(_scroll_velocity * delta)
 
 # The following functions are built-in. Note the icons beside the line numbers.
 # These functions are connected to child nodes, and they are called whenever
@@ -69,4 +76,9 @@ func _on_Hitbox_body_entered(body):
 # the Manager has a script with a shoot() function defined, we can trigger
 # custom behaviour from a generic script like this.
 func _on_ShootTimer_timeout():
-	$Manager.shoot()
+	if can_shoot:
+		$Manager.shoot()
+
+
+func _on_VisibilityEnabler2D_screen_entered():
+	pre_spawn = false

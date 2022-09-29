@@ -23,7 +23,7 @@ animations = [ {
 extents = Vector2( 8, 12 )
 
 [sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 2, 2 )
+extents = Vector2( 1, 1 )
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 0
@@ -32,9 +32,11 @@ script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 4 )
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 1 )
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -48,4 +50,13 @@ shape = SubResource( 5 )
 [node name="Bullet_spawner" type="Position2D" parent="."]
 position = Vector2( 0, -14 )
 
+[node name="RespawnTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="InvulTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
+[connection signal="timeout" from="InvulTimer" to="." method="_on_InvulTimer_timeout"]

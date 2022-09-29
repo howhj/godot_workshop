@@ -25,6 +25,7 @@ func shoot():
 # Like Enemy2, a separate Timer is used to provide a short delay between bullets
 # for the continuous streams.
 func _on_Timer_timeout():
-	$BulletSpawner.shoot_lines(_offset)
-	# _offset is increased whenever a new set of bullets is fired.
-	_offset += rot_speed % 360
+	if get_parent().can_shoot:
+		$BulletSpawner.shoot_lines(_offset)
+		# _offset is increased whenever a new set of bullets is fired.
+		_offset += rot_speed % 360
