@@ -4,7 +4,7 @@
 [ext_resource path="res://src/scripts/Enemy.gd" type="Script" id=2]
 [ext_resource path="res://src/scripts/Enemy1/Enemy1_Manager.gd" type="Script" id=3]
 [ext_resource path="res://src/scripts/Enemy1/Enemy1_BulletSpawner.gd" type="Script" id=4]
-[ext_resource path="res://src/actors/Enemy1_Movement.gd" type="Script" id=5]
+[ext_resource path="res://src/scripts/Enemy1/Enemy1_Movement.gd" type="Script" id=5]
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
