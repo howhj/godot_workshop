@@ -1,6 +1,6 @@
 # This is a generic script that all enemies are going to use.
 # I will skip over anything that has been mentioned in Player.gd.
-extends KinematicBody2D
+extends Node2D
 
 # We want to export this variable as it is the only way to give enemies
 # different HP values despite all of them using this script.
@@ -10,12 +10,15 @@ var _current_hp
 # Same as above. This is used to dictate the enemy's speed.
 export (int) var speed = 100
 
+var _parent
+
 func _ready():
 	_current_hp = max_hp
+	_parent = get_parent()
 
 # Allows the enemy to move. For now, we have them drift downward.
 func _physics_process(delta):
-	move_and_slide(Vector2(0, speed))
+	_parent.move_and_slide(Vector2(0, speed))
 
 # The following functions are built-in. Note the icons beside the line numbers.
 # These functions are connected to child nodes, and they are called whenever
@@ -26,7 +29,7 @@ func _physics_process(delta):
 # screen_exited. In other words, this object is destroyed when it leaves the
 # screen.
 func _on_VisibilityNotifier2D_screen_exited():
-	queue_free()
+	_parent.queue_free()
 	
 # Here, the child node is Hitbox (which is an Area2D node), while the signal
 # is body_entered. The Area2D node detects if a body (e.g. KinematicBody2D)
@@ -46,7 +49,7 @@ func _on_Hitbox_body_entered(body):
 	
 	# This simply destroys the enemy when its HP reaches 0.
 	if _current_hp == 0:
-		queue_free()
+		_parent.queue_free()
 
 # Here, the child node is ShootTimer (which is a Timer node). The signal is
 # timeout.

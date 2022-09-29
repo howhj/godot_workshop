@@ -6,9 +6,9 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 301, 655 )
+position = Vector2( 385, 929 )
 scale = Vector2( 2, 2 )
 
 [node name="Enemy3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 281, 351 )
+position = Vector2( 373, 496 )
 scale = Vector2( 4, 4 )

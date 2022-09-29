@@ -30,13 +30,9 @@ extents = Vector2( 16, 4 )
 
 [node name="Enemy2" type="KinematicBody2D"]
 collision_layer = 4
-script = ExtResource( 3 )
-max_hp = 15
-speed = 50
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 3 )
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -55,28 +51,33 @@ shape = SubResource( 5 )
 position = Vector2( 4.76837e-07, 1.19209e-07 )
 scale = Vector2( 1.6, 0.8 )
 
-[node name="Manager" type="Node2D" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource( 3 )
+max_hp = 15
+speed = 50
+
+[node name="Manager" type="Node2D" parent="Node2D"]
 script = ExtResource( 2 )
 
-[node name="BulletSpawnerL" type="Position2D" parent="Manager"]
+[node name="BulletSpawnerL" type="Position2D" parent="Node2D/Manager"]
 position = Vector2( -9, 8 )
 script = ExtResource( 5 )
 
-[node name="BulletSpawnerR" type="Position2D" parent="Manager"]
+[node name="BulletSpawnerR" type="Position2D" parent="Node2D/Manager"]
 position = Vector2( 9, 8 )
 script = ExtResource( 5 )
 
-[node name="BulletSpawnerM" type="Position2D" parent="Manager"]
+[node name="BulletSpawnerM" type="Position2D" parent="Node2D/Manager"]
 script = ExtResource( 4 )
 
-[node name="Timer" type="Timer" parent="Manager"]
+[node name="Timer" type="Timer" parent="Node2D/Manager"]
 wait_time = 0.2
 one_shot = true
 
 [node name="ShootTimer" type="Timer" parent="."]
 autostart = true
 
-[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
-[connection signal="timeout" from="Manager/Timer" to="Manager" method="_on_Timer_timeout"]
-[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+[connection signal="body_entered" from="Hitbox" to="Node2D" method="_on_Hitbox_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="Node2D" method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="Node2D/Manager/Timer" to="Node2D/Manager" method="_on_Timer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="Node2D" method="_on_ShootTimer_timeout"]

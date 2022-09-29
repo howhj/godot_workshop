@@ -22,23 +22,20 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4.5, 3.5 )
+extents = Vector2( 4, 3.5 )
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 8, 8 )
 
 [node name="Enemy1" type="KinematicBody2D"]
-position = Vector2( 0, -10 )
 collision_layer = 4
-script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 4 )
-frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -0.5, 2.5 )
+position = Vector2( 0, 2.5 )
 shape = SubResource( 1 )
 
 [node name="Hitbox" type="Area2D" parent="."]
@@ -52,16 +49,21 @@ shape = SubResource( 5 )
 position = Vector2( 4.17233e-07, 4.17233e-07 )
 scale = Vector2( 0.8, 0.8 )
 
-[node name="Manager" type="Node2D" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 0, 2.5 )
+script = ExtResource( 2 )
+
+[node name="Manager" type="Node2D" parent="Node2D"]
+position = Vector2( 0, -2.5 )
 script = ExtResource( 3 )
 
-[node name="BulletSpawner" type="Position2D" parent="Manager"]
+[node name="BulletSpawner" type="Position2D" parent="Node2D/Manager"]
 position = Vector2( 0, 9 )
 script = ExtResource( 4 )
 
 [node name="ShootTimer" type="Timer" parent="."]
 autostart = true
 
-[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
-[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]
+[connection signal="body_entered" from="Hitbox" to="Node2D" method="_on_Hitbox_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="Node2D" method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="ShootTimer" to="Node2D" method="_on_ShootTimer_timeout"]
