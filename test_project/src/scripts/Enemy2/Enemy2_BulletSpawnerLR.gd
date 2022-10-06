@@ -1,11 +1,3 @@
-# This is used for the first pattern (aimed 3 shots from left and right).
-#
-# The code is actually identical to Enemy1_BulletSpawner.gd.
-# Still, making them separate scripts makes it easier to manage, and you can
-# further customise the behaviour of one enemy without affecting the other(s).
-# For example, on a higher difficulty setting, you want Enemy1 to shoot 3-way
-# shots instead of a single shot, but you do not want Enemy2 to have that same
-# behaviour.
 extends Position2D
 
 const Bullet = preload("res://src/actors/EnemyBullet.tscn")
