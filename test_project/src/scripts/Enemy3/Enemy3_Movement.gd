@@ -14,29 +14,30 @@ func _ready():
 
 func _physics_process(delta):
 	var pos = get_global_position()
-	match _state:
-		0:
-			move(dest, lerp_weight)
-			
-			var offset = (pos - dest).length()
-			if offset > -50 and offset < 50:
-				$Node2D.can_shoot = true
-			if offset > -5 and offset < 5:
-				_state = 1
-				$WaitTimer.start()
-	
-		1:
-			_next_dest = hover_dest[_rng.randf_range(0, hover_dest.size())]
-			_state = 2
-	
-		2:
-			move(_next_dest, lerp_weight/5)
-			var offset = (pos - _next_dest).length()
-			if offset > -5 and offset < 5:
-				_state = 1
-	
-		3:
-			move(Vector2(pos.x, -500), lerp_weight/5)
+	if not $Node2D.is_dead:
+		match _state:
+			0:
+				move(dest, lerp_weight)
+				
+				var offset = (pos - dest).length()
+				if offset > -50 and offset < 50:
+					$Node2D.can_shoot = true
+				if offset > -5 and offset < 5:
+					_state = 1
+					$WaitTimer.start()
+		
+			1:
+				_next_dest = hover_dest[_rng.randf_range(0, hover_dest.size())]
+				_state = 2
+		
+			2:
+				move(_next_dest, lerp_weight/5)
+				var offset = (pos - _next_dest).length()
+				if offset > -5 and offset < 5:
+					_state = 1
+		
+			3:
+				move(Vector2(pos.x, -500), lerp_weight/5)
 
 
 func _on_WaitTimer_timeout():

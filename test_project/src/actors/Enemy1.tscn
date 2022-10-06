@@ -54,6 +54,7 @@ scale = Vector2( 0.8, 0.8 )
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2( 0, 2.5 )
 script = ExtResource( 2 )
+drop_power_up = true
 
 [node name="Manager" type="Node2D" parent="Node2D"]
 position = Vector2( 0, -2.5 )
