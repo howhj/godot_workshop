@@ -1,0 +1,85 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://src/Scripts/Actors/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://assets/spritesheets/enemy-small.png" type="Texture" id=2]
+[ext_resource path="res://src/Scripts/Actors/Enemy1/Enemy1_Shoot.gd" type="Script" id=3]
+[ext_resource path="res://src/Scripts/Actors/Enemy1/Enemy1_Manager.gd" type="Script" id=4]
+[ext_resource path="res://src/Scripts/Actors/Enemy1/Enemy1_Movement.gd" type="Script" id=5]
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 20.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 4, 3 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 8, 4 )
+
+[node name="Enemy1" type="Node2D"]
+script = ExtResource( 1 )
+drop_power_up = true
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+collision_layer = 4
+script = ExtResource( 5 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D"]
+frames = SubResource( 3 )
+frame = 1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+position = Vector2( 0, 3 )
+shape = SubResource( 4 )
+
+[node name="Hitbox" type="Area2D" parent="KinematicBody2D"]
+position = Vector2( 0, 6 )
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D/Hitbox"]
+position = Vector2( 0, -4 )
+shape = SubResource( 7 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="KinematicBody2D"]
+position = Vector2( 2, 2 )
+rect = Rect2( -10, -10, 16, 16 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="KinematicBody2D"]
+position = Vector2( 0, 14 )
+scale = Vector2( 0.8, 0.25 )
+physics_process_parent = true
+
+[node name="ShootManager" type="Node2D" parent="KinematicBody2D"]
+script = ExtResource( 4 )
+
+[node name="BulletSpawner" type="Position2D" parent="KinematicBody2D/ShootManager"]
+position = Vector2( 0, 8 )
+script = ExtResource( 3 )
+
+[node name="ShootTimer" type="Timer" parent="KinematicBody2D/ShootManager"]
+wait_time = 0.5
+autostart = true
+
+[node name="WaitTimer" type="Timer" parent="KinematicBody2D"]
+wait_time = 1.5
+one_shot = true
+
+[connection signal="body_entered" from="KinematicBody2D/Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="screen_exited" from="KinematicBody2D/VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="screen_entered" from="KinematicBody2D/VisibilityEnabler2D" to="." method="_on_VisibilityEnabler2D_screen_entered"]
+[connection signal="timeout" from="KinematicBody2D/ShootManager/ShootTimer" to="KinematicBody2D/ShootManager" method="_on_ShootTimer_timeout"]
+[connection signal="timeout" from="KinematicBody2D/WaitTimer" to="KinematicBody2D" method="_on_WaitTimer_timeout"]

@@ -1,0 +1,82 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/spritesheets/enemy-medium.png" type="Texture" id=1]
+[ext_resource path="res://src/Scripts/Actors/Enemy2/Enemy2_shootM.gd" type="Script" id=2]
+[ext_resource path="res://src/Scripts/Actors/Enemy2/Enemy2_manager.gd" type="Script" id=3]
+[ext_resource path="res://src/Scripts/Actors/Enemy2/Enemy2_shootLR.gd" type="Script" id=4]
+[ext_resource path="res://src/Scripts/Actors/Enemy.gd" type="Script" id=5]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 16 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 20.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 10, 3.5 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 16, 3.5 )
+
+[node name="Enemy2" type="KinematicBody2D"]
+collision_layer = 4
+script = ExtResource( 5 )
+max_hp = 30
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 3 )
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 2.5 )
+shape = SubResource( 4 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -4.76837e-07, 2.98023e-08 )
+scale = Vector2( 1.6, 0.8 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( 0, 3.5 )
+shape = SubResource( 5 )
+
+[node name="Shoot_manager" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Bullet_spawner_M" type="Position2D" parent="Shoot_manager"]
+script = ExtResource( 2 )
+
+[node name="Bullet_spawner_L" type="Position2D" parent="Shoot_manager"]
+position = Vector2( -9, 8 )
+script = ExtResource( 4 )
+
+[node name="Bullet_spawner_R" type="Position2D" parent="Shoot_manager"]
+position = Vector2( 9, 8 )
+script = ExtResource( 4 )
+
+[node name="Timer" type="Timer" parent="Shoot_manager"]
+wait_time = 0.2
+one_shot = true
+
+[node name="ShootTimer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="timeout" from="Shoot_manager/Timer" to="Shoot_manager" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Shoot_manager/Timer" to="Shoot_manager/Bullet_spawner_L" method="_on_Timer_timeout"]
+[connection signal="timeout" from="Shoot_manager/Timer" to="Shoot_manager/Bullet_spawner_R" method="_on_Timer_timeout"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_ShootTimer_timeout"]

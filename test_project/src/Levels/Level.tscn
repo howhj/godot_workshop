@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://src/Actors/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/Actors/Enemy1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Levels/Background.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/Actors/Enemy3.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/Scripts/Levels/Level.gd" type="Script" id=5]
+[ext_resource path="res://src/Levels/UI.tscn" type="PackedScene" id=6]
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Background" parent="." instance=ExtResource( 3 )]
+
+[node name="Low_priority" type="Node2D" parent="."]
+position = Vector2( 518, 563 )
+
+[node name="Enemy1" parent="Low_priority" instance=ExtResource( 2 )]
+position = Vector2( -278, -795 )
+
+[node name="Enemy2" parent="Low_priority" instance=ExtResource( 2 )]
+position = Vector2( 26, -635 )
+
+[node name="Enemy3" parent="Low_priority" instance=ExtResource( 2 )]
+position = Vector2( 138, -715 )
+
+[node name="Enemy4" parent="Low_priority" instance=ExtResource( 2 )]
+position = Vector2( -374, -859 )
+
+[node name="Enemy5" parent="Low_priority" instance=ExtResource( 4 )]
+position = Vector2( -142, -1091 )
+
+[node name="Player" parent="Low_priority" instance=ExtResource( 1 )]
+position = Vector2( -162, 302 )
+
+[node name="High_priority" type="Node2D" parent="."]
+position = Vector2( 518, 563 )
+
+[node name="UI" parent="." instance=ExtResource( 6 )]
+
+[connection signal="lives_changed" from="Low_priority/Player" to="UI" method="_on_Player_lives_changed"]
